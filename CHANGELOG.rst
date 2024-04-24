@@ -2,6 +2,18 @@
 Changelog
 =========
 
+[unreleased]
+============
+* [BREAKING] ROS1 driver code now requires C++17 (required for point cloud customization feature).
+* added the ability to customize the published point clouds(s) to velodyne point cloud format and
+  other common pcl point types.
+* ouster_image_nodelet can operate independently from ouster_cloud_nodelet.
+* install ouster-ros and ouster_client include directories in separate folders.
+* [BUGFIX]: LaserScan is not properly aligned with generated point cloud
+  * address an issue where LaserScan appeared different on FW prior to 2.4
+* [BUGFIX]: LaserScan does not work when using dual mode
+
+
 ouster_ros v0.10.0
 ==================
 
@@ -12,7 +24,9 @@ ouster_ros(1)
 * [BREAKING]: publish PCL point clouds destaggered.
 * introduced a new launch file parameter ``ptp_utc_tai_offset`` which represent offset in seconds
   to be applied to all ROS messages the driver generates when ``TIME_FROM_PTP_1588`` timestamp mode
-  is used. 
+  is used.
+  * [BREAKING]: the default value of ``ptp_utc_tai_offset`` is set to ``-37.0``. To retain the same
+    time offset for an existing system, users need to set ``ptp_utc_tai_offset`` to ``0.0``.
 * [BUGFIX]: destagger columns timestamp when generating destaggered point clouds.
 * [BUGFIX]: gracefully stop the driver when shutdown is requested.
 
@@ -49,7 +63,6 @@ ouster_client
 * [bugfix] Fixed dropped columns issue with 4096x5 and 2048x10
 
 
-
 ouster_ros v0.9.0
 ==================
 
@@ -71,7 +84,7 @@ ouster_ros(1)
 * added a no-bond option to the ``sensor.launch`` file
 * reduce the publish rate of imu tf transforms
 * implemented a new node named ``os_driver`` which combines the functionality of ``os_sensor``,
-  ``os_cloud`` and ``os_image`` into a single node. The new node can be launch via the new 
+  ``os_cloud`` and ``os_image`` into a single node. The new node can be launch via the new
   ``driver.launch`` file.
 * introduced a new topic ``/ouster/scan`` which publishes ``sensor_msgs::LaserScan`` messages, the
   user can pick which beam to be used for the message through the ``scan_ring`` launch argument.
